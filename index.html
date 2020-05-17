@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Google CDN JQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Bootstrap CCS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>The Pizza App</title>
+</head>
+
+<body>
+
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+        <main role="main">
+
+            <!-- Main jumbotron for a primary marketing message or call to action -->
+            <div class="jumbotron">
+                <div class="container">
+                    <h1 class="display-3">Hello, Pizza!</h1>
+                    <p>Build your own mega yummy pizza!</p>
+                    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+                </div>
+            </div>
+
+            <div class="container">
+                <!-- Example row of columns -->
+                <div class="row">
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-8">
+                        <form name="buildPizza" id="buildPizza" action="">
+                            <h2>Select your crust</h2>
+
+                            <input type="radio" id="handTossed" name="crust" value="Hand Tossed">
+                            <label for="handTossed">Hand Tossed</label><br>
+                            <select class="custom-select crust" id="handTossSelect">
+                                <option id="htNone" selected>Choose...</option>
+                                <option id="htOptionSmall" value='9.99'>Small ($9.99)</option>
+                                <option id="htOptionMedium" value='12.99'>Medium ($12.99)</option>
+                                <option id="htOptionLarge" value='14.99'>Large (14.99(</option>
+                            </select>
+
+                            <input type="radio" id="thinCrust" name="crust" value="Thin Crust">
+                            <label for="thinCrust">Thin Crust</label><br>
+                            <select class="custom-select crust" id="thinCrustSelect">
+                                <option id="tcNone" selected>Choose...</option>
+                                <option id="tcOptionMedium" value="11.99">Medium ($11.99)</option>
+                                <option id="tcOptionLarge" value="13.993">Large ($13.99)</option>
+                            </select>
+
+                            <input type="radio" id="NYStyle" name="crust" value="New York Style">
+                            <label for="other">New York Style</label><br>
+                            <select class="custom-select crust" id="NYStyleSelect">
+                                <option id="NyNone" selected>Choose...</option>
+                                <option id="NyOptionLarge" value="16.99">Large ($16.99)</option>
+                                <option id="NyOptionExtraLarge" value="19.99">Extra Large ($19.99)</option>
+                            </select>
+
+                            <input type="radio" id="glutenFree" name="crust" value="Gulten Free">
+                            <label for="glutenFree">Gulten Free</label>
+                            <select class="custom-select crust" id="glutenSelect">
+                                <option id="glutenNone" selected>Choose...</option>
+                                <option id="glutenSmall" value="9.99">Small ($9.99)</option>
+                            </select>
+
+                            <h2>Select your cheese</h2>
+
+                            <select class="custom-select" id="cheeseSelect">
+                                <option id="cheeseLight" value="0.00">Light: no charge</option>
+                                <option id="cheeseNormal" selected value="0.00">Normal (default): no charge</option>
+                                <option id="cheeseExtra" value="2.99">Extra: +$2.99</option>
+                                <option id="cheeseDouble" value="3.99">Double: +$3.99</option>
+                            </select>
+
+                            <h2>Select your sauce</h2>
+
+                            <select class="custom-select" id="sauceSelect">
+                                <option id="sauceReg" selected value="0.00">Regular Tomato: no charge</option>
+                                <option id="sauceHearty" value="0.99">Hearty Tomato: +$.99</option>
+                                <option id="sauceBBQ" value="1.99">BBQ Sauce: +$1.99</option>
+                            </select>
+
+                            <h2>Select your toppings</h2>
+                            <p>Each topping +$.99</p>
+
+
+                            <input type="checkbox" id="chkBoxPep" name="toppings" value="0.99">
+                            <label for="chkBoxPep">Pepperoni</label><br>
+
+                            <input type="checkbox" id="chkBoxSausage" name="toppings" value="0.99">
+                            <label for="chkBoxSausage">Sausage</label><br>
+
+                            <input type="checkbox" id="chkBoxHam" name="toppings" value="0.99">
+                            <label for="chkBoxHam">Ham</label><br>
+
+                            <input type="checkbox" id="chkBoxBacon" name="toppings" value="0.99">
+                            <label for="chkBoxBacon">Bacon</label><br>
+
+                            <input type="checkbox" id="chkBoxSalami" name="toppings" value="0.99">
+                            <label for="chkBoxSalami">Salami</label><br>
+
+                            <input type="checkbox" id="chkBoxPeppers" name="toppings" value="0.99">
+                            <label for="chkBoxPeppers">Peppers</label><br>
+
+                            <input type="checkbox" id="chkBoxOlives" name="toppings" value="0.99">
+                            <label for="chkBoxOlives">Olives</label><br>
+
+                            <input type="checkbox" id="chkBoxJal" name="toppings" value="0.99">
+                            <label for="chkBoxJal">Jalepenos</label><br>
+
+                            <input type="checkbox" id="chkBoxMush" name="toppings" value="0.99">
+                            <label for="chkBoxMush">Mushrooms</label><br>
+
+                            <input type="checkbox" id="chkBoxPine" name="toppings" value="0.99">
+                            <label for="chkBoxPine">Pineapple</label><br>
+
+                            <input type="checkbox" id="chkBoxOnion" name="toppings" value="0.99">
+                            <label for="chkBoxOnion">Onion</label><br>
+
+                        </form>
+
+                        <a href="hello.html">Addres Page</a>
+                        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
+                            tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
+                            malesuada magna mollis euismod. Donec sed odio dui. </p>
+                        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+
+
+
+                        <form name="deliveryAddress" id="deliveryAddress" class="needs-validation" novalidate>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName">First name</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="" value=""
+                                        required>
+
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName">Last name</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="" value=""
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                                <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                            </div>
+
+                            <div class="col-md-5 mb-3">
+                                <label for="country">Address Type</label>
+                                <select class="custom-select d-block w-100" id="addressType" required>
+                                    <option value="">Choose...</option>
+                                    <option selected>House</option>
+                                    <option>Apartment</option>
+                                    <option>Campus</option>
+                                    <option>Dorm</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="other">Additional Information</label>
+                                <input type="memo" class="form-control" id="other" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" placeholder="1234 Main St"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mb-3">
+                                    <label for="country">Country</label>
+                                    <select class="custom-select d-block w-100" id="country" required>
+                                        <option value="">Choose...</option>
+                                        <option>United States</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="state">State</label>
+                                    <select class="custom-select d-block w-100" id="state" required>
+                                        <option value="">Choose...</option>
+                                        <option>California</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="zip">Zip</label>
+                                    <input type="text" class="form-control" id="zip" placeholder="" required>
+                                </div>
+                            </div>
+                            <hr class="mb-4">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="same-address">
+                                <label class="custom-control-label" for="same-address">Billing address same as delivery
+                                    address</label>
+                            </div>
+                        </form>
+                        <form name="userPayment" id="userPayment">
+                            <hr class="mb-4">
+                            <h4 class="mb-3">Payment</h4>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName">First name</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="" value=""
+                                        required>
+
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName">Last name</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="" value=""
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                                <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                            </div>
+
+                            <div class="col-md-5 mb-3">
+                                <label for="country">Address Type</label>
+                                <select class="custom-select d-block w-100" id="addressType" required>
+                                    <option value="">Choose...</option>
+                                    <option selected>House</option>
+                                    <option>Apartment</option>
+                                    <option>Campus</option>
+                                    <option>Dorm</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="other">Additional Information</label>
+                                <input type="memo" class="form-control" id="other" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" placeholder="1234 Main St"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mb-3">
+                                    <label for="country">Country</label>
+                                    <select class="custom-select d-block w-100" id="country" required>
+                                        <option value="">Choose...</option>
+                                        <option>United States</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="state">State</label>
+                                    <select class="custom-select d-block w-100" id="state" required>
+                                        <option value="">Choose...</option>
+                                        <option>California</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="zip">Zip</label>
+                                    <input type="text" class="form-control" id="zip" placeholder="" required>
+                                </div>
+                            </div>
+
+                            <!-- <div class="d-block my-3">
+                                <div class="custom-control custom-radio">
+                                    <input id="credit" name="paymentMethod" type="radio" class="custom-control-input"
+                                        checked required>
+                                    <label class="custom-control-label" for="credit">Credit card</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input id="debit" name="paymentMethod" type="radio" class="custom-control-input"
+                                        required>
+                                    <label class="custom-control-label" for="debit">Debit card</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input"
+                                        required>
+                                    <label class="custom-control-label" for="paypal">PayPal</label>
+                                </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="cc-name">Name on card</label>
+                                    <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                                    <small class="text-muted">Full name as displayed on card</small>
+                                    <div class="invalid-feedback">
+                                        Name on card is required
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="cc-number">Credit card number</label>
+                                    <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                    <div class="invalid-feedback">
+                                        Credit card number is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <label for="cc-expiration">Expiration</label>
+                                    <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                                    <div class="invalid-feedback">
+                                        Expiration date required
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="cc-cvv">CVV</label>
+                                    <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                                    <div class="invalid-feedback">
+                                        Security code required
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mb-4">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                        </form>
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+                </div>
+
+                <hr>
+
+            </div> <!-- /container -->
+
+        </main>
+
+        <footer class="container">
+            <p>&copy; Whoop Whoop, Developed by Die Antword 2017-2020</p>
+        </footer>
+
+        <!-- Bootstrap JS-->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+
+        <!--Custom JS Code-->
+        <script src="js/script.js"></script>
+
+    </body>
+
+</html>
