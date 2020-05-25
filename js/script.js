@@ -9,6 +9,9 @@ let saucePrice = 0.00;
 let total;
 let cheeseChoice;
 let sauceChoice;
+// Validation Error Counts Global
+let regErrorCount = 0;
+let errorCount = 0;
 const dropDownArr = ['handTossSelect', 'thinCrustSelect', 'NYStyleSelect', 'glutenSelect'];
 const radioButtonArr = ['handTossed', 'thinCrust', 'NYStyle', 'glutenFree'];
 const cheeseArr = ['Light Cheese', ' Normal Cheese', 'Extra Cheese', 'Double Cheese']
@@ -20,11 +23,12 @@ const crustArr = [['Hand Tossed', ['blank_space', 'Small', 'Medium', 'Large']],
 ['New York Style', ['blank_space', 'Large', 'Extra Large']],
 ['Gluten Free', ['blank_space', 'Small']]]
 
-////////////// CHECK OUT ///////////////////
+////////////// Listeners ///////////////////
 
+// Check Out Button
 $('#checkOutBtn').click(function () {
     // Remind user to select a crust
-    if (crustOption === undefined || totalToppings === 0) {
+    if (crustOption === undefined) {
         console.log("come on select a crust")
     } else {
 
@@ -40,47 +44,40 @@ $('#checkOutBtn').click(function () {
 
         });
 
-         // $('#totalCost').innerHTML = calcTotal();
-         console.log(calcTotal());
-         $('#totalCost').text("$"+calcTotal());
-         
-         // Hide the pizza selections form
-         $('#buildPizza').hide();
+        // $('#totalCost').innerHTML = calcTotal();
+        console.log(calcTotal());
+        $('#totalCost').text("$" + calcTotal());
 
-         // Show the Delivery and Payments forms
-         $('#deliveryAddress').show();
-         $('#userPayment').show();
+        // Hide the pizza selections form
+        $('#buildPizza').hide();
 
+        // Show the Delivery and Payments forms
+        $('#deliveryAddress').show();
+        $('#userPayment').show();
     }
 
 });
 
-// Calculate everything and display total 
-function calcTotal() {
-    let toppingsTotal = totalToppings * .99;
-    total = toppingsTotal + cheesePrice + saucePrice + crustPrice;
-    return total.toFixed(2);
-
-}
-
-// Hide all of the crust selections on load
-function hideOptionsOnLoad() {
-    $('.crust').hide();
-    $('#deliveryAddress').hide();
-    $('#userPayment').hide();
-}
-
-// Monitor the Billing address
+// Monitor the Billing address Button
 $('#same-address').click(function (e) {
-    console.log("Billing address is the same")
-    console.log(e.target.value)
-
-    // Determine if the user checks or unchecks the billing address same as check box
-    if ($(this).prop('checked') === true) {
-        $('#billingAddress').hide();
+    console.log("same address button")
+    // errorCounterDelivery()
+    if (emptyTextErrorDelivery() > 0 || (errorCounterDelivery() > 0)) {
+        $(this).prop('checked', false);
+        console.log("Things are wrong")
     } else {
-        $('#billingAddress').show();
+        console.log("Things are right")
+        billingAddressCheck()
     }
+    //Copy/validate delivery fields on click, remove/validate off click
+    // if (errorCounterDelivery() > 0 && emptyTextErrorDelivery() >0) {
+    //     console.log("same address true")
+    //     window.alert("Please correct invalid fields to continue")
+    //     $(this).prop('checked', false);
+    // } else {
+    //     billingAddressCheck();
+    // }
+
 
 });
 
@@ -89,7 +86,9 @@ $('#toppings').click(function (e) {
 
     // Determine if the user is checking or unchecking a choice for toppings
     // Update the toppings array
-    if (e.target.checked === true) {
+    if (e.target.checked === undefined) {
+        console.log("Nothing")
+    } else if (e.target.checked === true) {
         userPizzaSelections.push(e.target.value);
     } else {
         let removeItem = userPizzaSelections.indexOf(e.target.value);
@@ -98,6 +97,34 @@ $('#toppings').click(function (e) {
 
     // Keep track of the total toppings checked.
     totalToppings = $('input:checkbox:checked').length;
+    // console.log(userPizzaSelections);
+
+});
+
+//Listen for all delivery form fields and dynamically check user input.
+$('#deliveryAddress').change(function (e) {
+    validateUserInput(e.target.id, e.target.value)
+    console.log(e.target.id)
+})
+
+//Listen for all deleiver form fields and dynamically check user input.
+$('#userPayment').change(function (e) {
+    validateUserInput(e.target.id, e.target.value)
+    console.log(e.target.id)
+})
+
+// Listen for the checkout Button
+$('#contineTocheckOut').click(function (e) {
+    // Check for empty text
+    emptyTextError();
+    // console.log('this is the error ' + errorCounter());
+
+    if (errorCounter() != 0) {
+        console.log("Need to fix errors")
+    } else {
+        console.log("Please proceed")
+
+    }
 
 });
 
@@ -148,6 +175,300 @@ $('.crust').change(function (e) {
 
 });
 
+////////////// Functions  ///////////////////
+
+// Populate and check for empty fields in billing address
+function billingAddressCheck(element) {
+    if ($('#same-address').prop('checked') === true) {
+        // $('#billingAddress').hide();
+        for (let i = 1; i < 10; i++) {
+            let increment = 9;
+            increment += Number([i]); //Create another iterator for billing IDs
+
+            // Copy the delivery address text to billig address text fields
+            $('#deliveryAdd_' + increment).val($('#deliveryAdd_' + [i]).val())
+
+            //Check regex validation
+            validateUserInput($('#deliveryAdd_' + increment).attr('id'), $('#deliveryAdd_' + increment).val())
+        }
+
+    } else {
+        for (let i = 10; i < 20; i++) {
+            // Empty text values and remove red border
+            $('#deliveryAdd_' + [i]).val(" ");
+            $("#deliveryAdd_" + [i]).css("border", "1px solid #ced4da")
+
+        }
+
+    }
+};
+
+// Calculate everything and display total 
+function calcTotal() {
+    let toppingsTotal = totalToppings * .99;
+    total = toppingsTotal + cheesePrice + saucePrice + crustPrice;
+    return total.toFixed(2);
+
+}
+
+// Hide all of the crust selections on load
+function hideOptionsOnLoad() {
+    $('.crust').hide();
+    $('#deliveryAddress').hide();
+    $('#userPayment').hide();
+}
+
+// Regex Validation function (PERFORM VALIDATION)
+function validateUserInput(targetID, targetVal) {
+
+    // REGEX Variables First & Lastname
+    regName = /^[a-zA-Z]+$/;
+
+    //Email
+    regMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    regFirstLast = /^\b[A-Z]+.+[?^ ][A-Z].{1,19}|\b[A-Z]+.+[?^,][A-Z].{1,19}/;
+
+    // Address
+    regAdd = /^[a-zA-Z0-9\s,.'-]{3,}$/;
+
+    // Apt numbers etc.
+    regOption = /^[#.apt.0-9a-zA-Z\s,-]+$/;
+
+    //5 or 9 digit zip
+    regZip = /^[0-9]{5}(?:-[0-9]{4})?$/;
+
+    //Credit Card Regex
+    regCredit = regexp = /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/;
+
+    // Check for 3 numbers for CCV
+    reqCCV = /^[0-9]{3}?$/;
+
+    switch (targetID) {
+        case 'deliveryAdd_1':
+            regExFieldVal(regName, targetVal, targetID)
+            break;
+        case 'deliveryAdd_2':
+            regExFieldVal(regName, targetVal, targetID)
+            break;
+        case 'deliveryAdd_3':
+            regExFieldVal(regMail, targetVal, targetID)
+            break;
+        case 'deliveryAdd_5':
+            regExFieldVal(regAdd, targetVal, targetID)
+            break;
+        case 'deliveryAdd_6':
+            regExFieldVal(regOption, targetVal, targetID)
+            break;
+        case 'deliveryAdd_7':
+            console.log(targetVal)
+            if (targetVal == "") {
+                document.getElementById('deliveryAdd_7').style.borderColor = 'red';
+            } else {
+                document.getElementById('deliveryAdd_7').style.borderColor = '#ced4da';
+            }
+            break;
+        case 'deliveryAdd_8':
+            console.log(targetVal)
+            if (targetVal == "") {
+                document.getElementById('deliveryAdd_8').style.borderColor = 'red';
+            } else {
+                document.getElementById('deliveryAdd_8').style.borderColor = '#ced4da';
+            }
+            break;
+        case 'deliveryAdd_9':
+            regExFieldVal(regZip, targetVal, targetID)
+            break;
+        case 'deliveryAdd_10':
+            regExFieldVal(regName, targetVal, targetID)
+            break;
+        case 'deliveryAdd_11':
+            regExFieldVal(regName, targetVal, targetID)
+            break;
+        case 'deliveryAdd_12':
+            regExFieldVal(regMail, targetVal, targetID)
+            break;
+        case 'deliveryAdd_14':
+            regExFieldVal(regAdd, targetVal, targetID)
+            break;
+        // case 'deliveryAdd_15':
+        //     regExFieldVal(regOption, targetVal, targetID)
+        //     break;
+        case 'deliveryAdd_16':
+            console.log(targetVal)
+            if (targetVal == "") {
+                document.getElementById('deliveryAdd_16').style.borderColor = 'red';
+            } else {
+                document.getElementById('deliveryAdd_16').style.borderColor = '#ced4da';
+            }
+            break;
+        case 'deliveryAdd_17':
+            console.log(targetVal)
+            if (targetVal == "") {
+                document.getElementById('deliveryAdd_17').style.borderColor = 'red';
+            } else {
+                document.getElementById('deliveryAdd_17').style.borderColor = '#ced4da';
+            }
+            break;
+        case 'deliveryAdd_18':
+            regExFieldVal(regZip, targetVal, targetID)
+            break;
+        case 'deliveryAdd_19':
+            regExFieldVal(regFirstLast, targetVal, targetID)
+            break;
+        case 'deliveryAdd_20':
+            regExFieldVal(regCredit, targetVal, targetID)
+            break;
+        case 'deliveryAdd_21':
+            console.log("expiration Date")
+            break;
+        case 'deliveryAdd_22':
+            regExFieldVal(reqCCV, targetVal, targetID)
+            break;
+        default:
+
+    }
+
+}
+
+// Regex Field Validation function (CHANGE THE BORDER COLOR)
+function regExFieldVal(regControl, fieldValue, fieldName) {
+
+    if (!regControl.test(fieldValue)) {
+        $('#' + fieldName).css("border", "1px solid red")
+    } else {
+        $('#' + fieldName).css("border", "1px solid #ced4da")
+
+    }
+    errorCounter();
+
+}
+
+// Counts only the Delivery address errors. Used to tell user to fix error in order to select delivery same as billing
+function errorCounterDelivery() {
+    let errorCountDel = 0;
+    let arr = [1, 2, 3, 5, 7, 9];
+    arr.forEach(i => {
+        console.log("In errorCounterDelivery")
+        if (document.getElementById('deliveryAdd_' + [i]).style.borderColor === 'red') {
+            errorCountDel += 1;
+            console.log(errorCountDel);
+            $("#deliveryAdd_" + [i]).css("border", "1px solid red")
+            // $('#sp' + [i]).show();  Just hiding the span stuff
+            // || (!$("#deliveryAdd_" + [i]).val())
+            // } else {
+            //     // $("#sp" + [i]).hide(); // Hiding the span stuff
+            //     $("#deliveryAdd_" + [i]).css("border", "1px solid #ced4da");
+            //     console.log("error count false");
+            //     errorCountDelivery - 1;
+        }
+
+
+    })
+    return errorCountDel;
+
+}
+
+// The Input Error Counting Function.  Keeps track of the num of empty fields of regex errors
+function errorCounter() {
+    errorCount = 0;
+    let arr = [1, 2, 5, 7, 8, 9, 10, 11, 14, 16, 17, 18];
+    arr.forEach(i => {
+
+        if (document.getElementById('deliveryAdd_' + [i]).style.borderColor === 'red') {
+            errorCount += 1;
+            console.log('In true erroCounter')
+        } else {
+            console.log("error count false")
+            errorCount - 1;
+        }
+    });
+    return errorCount;
+}
+
+// Check to the input text boxes for no entry
+function emptyTextError() {
+    let arr = [1, 2, 5, 7, 8, 9, 10, 11, 14, 16, 17, 18];
+    arr.forEach(i => {
+
+        // for (let i = 1; i < 19; i++) {
+        if (!$("#deliveryAdd_" + [i]).val()) {
+            $("#deliveryAdd_" + [i]).css("border", "1px solid red")
+            // $('#sp' + [i]).show();  Just hiding the span stuff
+
+        } else {
+            // $("#sp" + [i]).hide(); // Hiding the span stuff
+            $("#deliveryAdd_" + [i]).css("border", "1px solid #ced4da")
+
+        }
+
+    });
+
+}
+// Check for empty fields in delivery address.
+function emptyTextErrorDelivery() {
+    let arr = [1, 2, 3, 5, 7, 8, 9];
+    let deliveryErrors = 0;
+    arr.forEach(i => {
+
+        // for (let i = 1; i < 19; i++) {
+        if (!$("#deliveryAdd_" + [i]).val()) {
+            $("#deliveryAdd_" + [i]).css("border", "1px solid red")
+            // $('#sp' + [i]).show();  Just hiding the span stuff
+            deliveryErrors += 1;
+
+        } else {
+            // $("#sp" + [i]).hide(); // Hiding the span stuff
+            // $("#deliveryAdd_" + [i]).css("border", "1px solid #ced4da")
+            deliveryErrors - 1;
+        }
+
+    });
+    return deliveryErrors;
+
+}
+
+function hideAllErrorImages() {
+    for (let i = 1; i <= 9; i++) {
+        $('#sp' + [i]).hide();
+    }
+}
+// Code with Karen
+// Get todays date and year
+// const today = new Date();
+// const todayyear = today.getFullYear();
+// const todaymonth = today.getMonth();
+
+
+// Lamar Stuff Use code bleo
+// let mo = 0;
+// let yr = 2020;
+
+// function checkDate() {
+//     if (mo < todaymonth && yr == todayyear) {
+//         console.log('expired');
+//     } else {
+//         console.log('cool');
+//     }
+// }
+
+// $('#ccmonth').click(e => {
+//     $('#ccmonth').change(e => {
+//         mo = e.target.value;
+//     })
+//     mo = e.target.value;
+//     checkDate()
+// });
+
+// $('#ex-year').click(e => {
+//     $('#ex-year').change(e => {
+//         yr = e.target.value;
+//     })
+//     yr = e.target.value;
+//     checkDate()
+// });
+// End of Code with Karen
+
 ////////////// CRUST SELECTION ///////////////////
 function clearDropDowns(e) {
     let user_selected = dropDownArr.indexOf(e.target.id);
@@ -176,9 +497,10 @@ function unHideCrust(radioId) {
 
 }
 
-//Run applications
+/////////////// Run application ///////////////////////
 window.addEventListener('load', () => {
 
-    hideOptionsOnLoad();
+    // hideOptionsOnLoad();
+    hideAllErrorImages();
 
 });
