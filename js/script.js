@@ -1,12 +1,12 @@
 //Global Variables
 let radioId;
 let crustOption;
-let crustPrice;
-let crustChoice;
+let crustPrice = 0.00;
+let crustChoice = 0.00;
 let totalToppings = 0;
 let cheesePrice = 0.00;
 let saucePrice = 0.00;
-let total;
+let total = 0.00;
 let cheeseChoice;
 let sauceChoice;
 // Validation Error Counts Global
@@ -97,6 +97,9 @@ $('#toppings').click(function (e) {
 
     // Keep track of the total toppings checked.
     totalToppings = $('input:checkbox:checked').length;
+
+    //Display the running total
+    $('#totalCost').text("$" + calcTotal());
     // console.log(userPizzaSelections);
 
 });
@@ -123,6 +126,7 @@ $('#contineTocheckOut').click(function (e) {
         console.log("Need to fix errors")
     } else {
         console.log("Please proceed")
+        window.location.href = "orderComplete.html"
 
     }
 
@@ -134,6 +138,7 @@ $(':radio').click(function (e) {
     crust_option = e.target.value;
     unHideCrust(radioId);
 
+
 });
 
 // Set the global cost for cheese
@@ -141,6 +146,9 @@ $('.cheese').change(function (e) {
 
     //Set the global crust price
     cheesePrice = Number(e.target.value);
+
+    //Display the running total
+    $('#totalCost').text("$" + calcTotal());
 
     // Globally set the user cheese choice. These variables will be used at check out.
     cheeseOption = e.target.id;
@@ -153,6 +161,9 @@ $('.sauce').change(function (e) {
 
     //Set the global crust price
     saucePrice = Number(e.target.value);
+
+    //Display the running total
+    $('#totalCost').text("$" + calcTotal());
 
     // Globally set the user sauce choice. These variables will be used at check out.
     sauceOption = e.target.id;
@@ -169,6 +180,9 @@ $('.crust').change(function (e) {
     // Globally set the user crust choice. These variables will be used at check out.
     crustOption = e.target.id;
     crustChoice = e.target.selectedIndex;
+
+    //Display the running total
+    $('#totalCost').text("$" + calcTotal());
 
     // Clear unused crust drop downs
     clearDropDowns(e);
@@ -240,6 +254,9 @@ function validateUserInput(targetID, targetVal) {
 
     //Credit Card Regex
     regCredit = regexp = /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/;
+
+    // Check for experiation date
+    regExper = /^[0-1]{1}[1-2]{1}\/[2-9]{1}[0-9]{1}$/
 
     // Check for 3 numbers for CCV
     reqCCV = /^[0-9]{3}?$/;
@@ -320,6 +337,7 @@ function validateUserInput(targetID, targetVal) {
             regExFieldVal(regCredit, targetVal, targetID)
             break;
         case 'deliveryAdd_21':
+            regExFieldVal(regExper, targetVal, targetID)
             console.log("expiration Date")
             break;
         case 'deliveryAdd_22':
@@ -433,14 +451,14 @@ function hideAllErrorImages() {
         $('#sp' + [i]).hide();
     }
 }
-// Code with Karen
-// Get todays date and year
+// // Code with Karen
+// // Get todays date and year
 // const today = new Date();
 // const todayyear = today.getFullYear();
 // const todaymonth = today.getMonth();
 
 
-// Lamar Stuff Use code bleo
+// // Lamar Stuff Use code bleo
 // let mo = 0;
 // let yr = 2020;
 
@@ -452,7 +470,7 @@ function hideAllErrorImages() {
 //     }
 // }
 
-// $('#ccmonth').click(e => {
+// $('#deliveryAdd_21').click(e => {
 //     $('#ccmonth').change(e => {
 //         mo = e.target.value;
 //     })
@@ -500,7 +518,7 @@ function unHideCrust(radioId) {
 /////////////// Run application ///////////////////////
 window.addEventListener('load', () => {
 
-    // hideOptionsOnLoad();
+    hideOptionsOnLoad();
     hideAllErrorImages();
 
 });
