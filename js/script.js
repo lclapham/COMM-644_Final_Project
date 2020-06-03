@@ -272,6 +272,8 @@ function validateUserInput(targetID, targetVal) {
     // Check for 3 numbers for CCV
     reqCCV = /^[0-9]{3}?$/;
 
+    regPhone = /^\d{3}-\d{3}-\d{4}$/;
+
     switch (targetID) {
         case 'deliveryAdd_1':
             regExFieldVal(regName, targetVal, targetID)
@@ -365,6 +367,9 @@ function validateUserInput(targetID, targetVal) {
             break;
         case 'deliveryAdd_23':
             regExFieldVal(reqCCV, targetVal, targetID)
+            break;
+        case 'deliveryAdd_24':
+            regExFieldVal(regPhone, targetVal, targetID)
             break;
         default:
 
