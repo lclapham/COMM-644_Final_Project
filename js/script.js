@@ -10,6 +10,7 @@ let saucePrice = 0.00;
 let total = 0.00;
 let cheeseChoice = 1;
 let sauceChoice = 0;
+let reciept;
 // Validation Error Counts Global
 let regErrorCount = 0;
 let errorCount = 0;
@@ -123,13 +124,22 @@ $('#contineTocheckOut').click(function (e) {
     // Check for empty text
     emptyTextError();
     // console.log('this is the error ' + errorCounter());
-
+    console.log("This is the checkout error count " + errorCounter());
     if (errorCounter() != 0) {
         console.log("Need to fix errors")
     } else {
         console.log("Please proceed")
+        reciept = ("Your order:" + "\n" + crustText + "\n" + (cheeseArr[cheeseChoice]) + "\n" + (sauceArr[sauceChoice]) + "\n" + "Toppings: " + userPizzaSelections + "\n\n" + "Your total: $" + total.toFixed(2))
 
-        window.alert("Your Order:" + "\n" + crustText + "\n" + (cheeseArr[cheeseChoice]) + "\n" + (sauceArr[sauceChoice]) + "\n" + "Toppings: " + userPizzaSelections + "\n\n" + "Your total: $" + total.toFixed(2))
+        let r = window.confirm(reciept);
+        if (r == true) {
+            window.location.href = 'orderComplete.html'
+
+        } else {
+            window.location.href = 'index.html';
+        }
+
+
 
         // console.log(cheeseArr[cheeseChoice]);
         // console.log(sauceArr[sauceChoice]);
@@ -282,7 +292,11 @@ function validateUserInput(targetID, targetVal) {
             regExFieldVal(regName, targetVal, targetID)
             break;
         case 'deliveryAdd_3':
-            regExFieldVal(regMail, targetVal, targetID)
+            if (targetVal == "") {
+                document.getElementById('deliveryAdd_3').style.borderColor = '#ced4da';
+            } else {
+                regExFieldVal(regMail, targetVal, targetID)
+            }
             break;
         case 'deliveryAdd_5':
             regExFieldVal(regAdd, targetVal, targetID)
@@ -316,7 +330,12 @@ function validateUserInput(targetID, targetVal) {
             regExFieldVal(regName, targetVal, targetID)
             break;
         case 'deliveryAdd_12':
-            regExFieldVal(regMail, targetVal, targetID)
+            if (targetVal == "") {
+                document.getElementById('deliveryAdd_12').style.borderColor = '#ced4da';
+            } else {
+                regExFieldVal(regMail, targetVal, targetID)
+            }
+
             break;
         case 'deliveryAdd_14':
             regExFieldVal(regAdd, targetVal, targetID)
@@ -393,7 +412,7 @@ function regExFieldVal(regControl, fieldValue, fieldName) {
 // Counts only the Delivery address errors. Used to tell user to fix error in order to select delivery same as billing
 function errorCounterDelivery() {
     let errorCountDel = 0;
-    let arr = [1, 2, 3, 5, 7, 9];
+    let arr = [1, 2, 3, 5, 7, 9, 24];
     arr.forEach(i => {
         console.log("In errorCounterDelivery")
         if (document.getElementById('deliveryAdd_' + [i]).style.borderColor === 'red') {
@@ -418,7 +437,7 @@ function errorCounterDelivery() {
 // The Input Error Counting Function.  Keeps track of the num of empty fields of regex errors
 function errorCounter() {
     errorCount = 0;
-    let arr = [1, 2, 5, 7, 8, 9, 10, 11, 14, 16, 17, 18];
+    let arr = [1, 2, 5, 7, 8, 9, 10, 11, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24];
     arr.forEach(i => {
 
         if (document.getElementById('deliveryAdd_' + [i]).style.borderColor === 'red') {
@@ -434,9 +453,9 @@ function errorCounter() {
 
 // Check to the input text boxes for no entry
 function emptyTextError() {
-    let arr = [1, 2, 5, 7, 8, 9, 10, 11, 14, 16, 17, 18];
+    let arr = [1, 2, 5, 7, 8, 9, 10, 11, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24];
     arr.forEach(i => {
-
+        console.log("test for empty item # " + i)
         // for (let i = 1; i < 19; i++) {
         if (!$("#deliveryAdd_" + [i]).val()) {
             $("#deliveryAdd_" + [i]).css("border", "1px solid red")
@@ -453,7 +472,7 @@ function emptyTextError() {
 }
 // Check for empty fields in delivery address.
 function emptyTextErrorDelivery() {
-    let arr = [1, 2, 3, 5, 7, 8, 9];
+    let arr = [1, 2, 5, 7, 8, 9, 24];
     let deliveryErrors = 0;
     arr.forEach(i => {
 
