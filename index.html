@@ -59,9 +59,10 @@
             <!-- Main jumbotron for a primary marketing message or call to action -->
             <div class="jumbotron">
                 <div class="container">
-                    <h1 class="display-3">Hello, Pizza!</h1>
+                    <h1 class="display-3">Hello, You Want Pizza!</h1>
                     <p>Build your own mega yummy pizza!</p>
-                    <p id="totalCost">$0.00</p>
+                    <p style="float:left">Your Pizza Total:&nbsp;</p>
+                    <p id="totalCost"> $0.00</p>
                 </div>
             </div>
 
@@ -358,15 +359,22 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3 mb-3">
-                                    <label for="deliveryAdd_21">Expiration</label>
-                                    <input type="text" class="form-control" id="deliveryAdd_21" placeholder="01/20" >
+                                    <label for="deliveryAdd_21">Expiration Month</label>
+                                    <input type="text" class="form-control" id="deliveryAdd_21" placeholder="MM" >
                                     <div class="invalid-feedback">
                                         Expiration date required
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <label for="deliveryAdd_22">CVV</label>
-                                    <input type="text" class="form-control" id="deliveryAdd_22" placeholder="" >
+                                    <label for="deliveryAdd_22">Expiration Year</label>
+                                    <input type="text" class="form-control" id="deliveryAdd_22" placeholder="YYYY" >
+                                    <div class="invalid-feedback">
+                                        Expiration date required
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="deliveryAdd_23">CVV</label>
+                                    <input type="text" class="form-control" id="deliveryAdd_23" placeholder="123" >
                                     <div class="invalid-feedback">
                                         Security code required
                                     </div>

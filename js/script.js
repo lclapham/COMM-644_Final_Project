@@ -1,20 +1,21 @@
 //Global Variables
 let radioId;
 let crustOption;
+let crustText;
 let crustPrice = 0.00;
 let crustChoice = 0.00;
 let totalToppings = 0;
 let cheesePrice = 0.00;
 let saucePrice = 0.00;
 let total = 0.00;
-let cheeseChoice;
-let sauceChoice;
+let cheeseChoice = 1;
+let sauceChoice = 0;
 // Validation Error Counts Global
 let regErrorCount = 0;
 let errorCount = 0;
 const dropDownArr = ['handTossSelect', 'thinCrustSelect', 'NYStyleSelect', 'glutenSelect'];
 const radioButtonArr = ['handTossed', 'thinCrust', 'NYStyle', 'glutenFree'];
-const cheeseArr = ['Light Cheese', ' Normal Cheese', 'Extra Cheese', 'Double Cheese']
+const cheeseArr = ['Light Cheese', 'Normal Cheese', 'Extra Cheese', 'Double Cheese']
 const sauceArr = ['Regular Tomato', 'Hearty Tomato', 'BBQ']
 let userPizzaSelections = [];
 let deliveryAddress = [];
@@ -29,6 +30,7 @@ const crustArr = [['Hand Tossed', ['blank_space', 'Small', 'Medium', 'Large']],
 $('#checkOutBtn').click(function () {
     // Remind user to select a crust
     if (crustOption === undefined) {
+        window.alert("You must select a crust at a minimum.")
         console.log("come on select a crust")
     } else {
 
@@ -126,7 +128,12 @@ $('#contineTocheckOut').click(function (e) {
         console.log("Need to fix errors")
     } else {
         console.log("Please proceed")
-        window.location.href = "orderComplete.html"
+
+        window.alert("Your Order:" + "\n" + crustText + "\n" + (cheeseArr[cheeseChoice]) + "\n" + (sauceArr[sauceChoice]) + "\n" + "Toppings: " + userPizzaSelections + "\n\n" + "Your total: $" + total.toFixed(2))
+
+        // console.log(cheeseArr[cheeseChoice]);
+        // console.log(sauceArr[sauceChoice]);
+
 
     }
 
@@ -183,6 +190,9 @@ $('.crust').change(function (e) {
 
     //Display the running total
     $('#totalCost').text("$" + calcTotal());
+    crustText = (crustArr[dropDownArr.indexOf(crustOption)][0] + " " + crustArr[dropDownArr.indexOf(crustOption)][1][crustChoice])
+    console.log("Test " + crustText);
+
 
     // Clear unused crust drop downs
     clearDropDowns(e);
@@ -256,7 +266,8 @@ function validateUserInput(targetID, targetVal) {
     regCredit = regexp = /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/;
 
     // Check for experiation date
-    regExper = /^[0-1]{1}[1-2]{1}\/[2-9]{1}[0-9]{1}$/
+    // regExper = /^((0[1-9])|(1[0-2]))\/[2-9]{1}[0-9]{1}$/
+    regMonth = /^((0[1-9])|(1[0-2]))\b/
 
     // Check for 3 numbers for CCV
     reqCCV = /^[0-9]{3}?$/;
@@ -337,10 +348,22 @@ function validateUserInput(targetID, targetVal) {
             regExFieldVal(regCredit, targetVal, targetID)
             break;
         case 'deliveryAdd_21':
-            regExFieldVal(regExper, targetVal, targetID)
+            regExFieldVal(regMonth, targetVal, targetID)
+            // checkDate();
             console.log("expiration Date")
             break;
         case 'deliveryAdd_22':
+            if (targetVal < 2020) {
+                $('#' + targetID).css("border", "1px solid red")
+            } else {
+                $('#' + targetID).css("border", "1px solid #ced4da")
+
+            }
+            errorCounter();
+
+            console.log("expiration Date")
+            break;
+        case 'deliveryAdd_23':
             regExFieldVal(reqCCV, targetVal, targetID)
             break;
         default:
@@ -451,24 +474,32 @@ function hideAllErrorImages() {
         $('#sp' + [i]).hide();
     }
 }
-// // Code with Karen
-// // Get todays date and year
-// const today = new Date();
-// const todayyear = today.getFullYear();
-// const todaymonth = today.getMonth();
+// Code with Karen
+// Get todays date and year
+const today = new Date();
+const todayyear = today.getFullYear();
+const todaymonth = today.getMonth();
 
 
-// // Lamar Stuff Use code bleo
-// let mo = 0;
-// let yr = 2020;
+// Lamar Stuff Use code below
+
 
 // function checkDate() {
-//     if (mo < todaymonth && yr == todayyear) {
+
+//     let mo = $('#deliveryAdd_21').val();
+//     console.log("You are right here " + mo);
+//     let yr = 2020;
+
+
+//     if (mo < todaymonth) {
+//         document.getElementById('deliveryAdd_21').style.borderColor = 'red';
 //         console.log('expired');
 //     } else {
+//         document.getElementById('deliveryAdd_21').style.borderColor = '#ced4da';
 //         console.log('cool');
 //     }
 // }
+
 
 // $('#deliveryAdd_21').click(e => {
 //     $('#ccmonth').change(e => {
