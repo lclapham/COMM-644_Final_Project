@@ -11,6 +11,7 @@ let total = 0.00;
 let cheeseChoice = 1;
 let sauceChoice = 0;
 let reciept;
+let response;
 // Validation Error Counts Global
 let regErrorCount = 0;
 let errorCount = 0;
@@ -121,31 +122,36 @@ $('#userPayment').change(function (e) {
 
 // Listen for the checkout Button
 $('#contineTocheckOut').click(function (e) {
+    console.log("In continue to checkout")
     // Check for empty text
     emptyTextError();
     // console.log('this is the error ' + errorCounter());
     console.log("This is the checkout error count " + errorCounter());
+
+    reciept = ("Your order:" + "\n" + crustText + "\n" + (cheeseArr[cheeseChoice]) + "\n" + (sauceArr[sauceChoice]) + "\n" + "Toppings: " + userPizzaSelections + "\n\n" + "Your total: $" + total.toFixed(2))
+
+    response = window.confirm(reciept);
+   
+
     if (errorCounter() != 0) {
-        console.log("Need to fix errors")
+        console.log("Need to fix errors");
+       
+    } else if (response == true) {
+        
+        window.location.href = 'orderComplete.html'
+
     } else {
-        console.log("Please proceed")
-        reciept = ("Your order:" + "\n" + crustText + "\n" + (cheeseArr[cheeseChoice]) + "\n" + (sauceArr[sauceChoice]) + "\n" + "Toppings: " + userPizzaSelections + "\n\n" + "Your total: $" + total.toFixed(2))
-
-        let r = window.confirm(reciept);
-        if (r == true) {
-            window.location.href = 'orderComplete.html'
-
-        } else {
-            window.location.href = 'index.html';
-        }
-
-
-
-        // console.log(cheeseArr[cheeseChoice]);
-        // console.log(sauceArr[sauceChoice]);
-
-
+       
+        window.location.href = 'index.html';
     }
+
+
+
+    // console.log(cheeseArr[cheeseChoice]);
+    // console.log(sauceArr[sauceChoice]);
+
+return false;
+
 
 });
 
@@ -370,7 +376,7 @@ function validateUserInput(targetID, targetVal) {
             break;
         case 'deliveryAdd_21':
             regExFieldVal(regMonth, targetVal, targetID)
-            // checkDate();
+            checkDate();
             console.log("expiration Date")
             break;
         case 'deliveryAdd_22':
@@ -382,7 +388,7 @@ function validateUserInput(targetID, targetVal) {
             }
             errorCounter();
 
-            console.log("expiration Date")
+            // console.log("expiration Date")
             break;
         case 'deliveryAdd_23':
             regExFieldVal(reqCCV, targetVal, targetID)
@@ -498,7 +504,7 @@ function hideAllErrorImages() {
         $('#sp' + [i]).hide();
     }
 }
-// Code with Karen
+
 // Get todays date and year
 const today = new Date();
 const todayyear = today.getFullYear();
@@ -508,21 +514,21 @@ const todaymonth = today.getMonth();
 // Lamar Stuff Use code below
 
 
-// function checkDate() {
+function checkDate() {
 
-//     let mo = $('#deliveryAdd_21').val();
-//     console.log("You are right here " + mo);
-//     let yr = 2020;
+    let mo = $('#deliveryAdd_21').val();
+    console.log("You are right here " + mo);
+    let yr = 2020;
 
 
-//     if (mo < todaymonth) {
-//         document.getElementById('deliveryAdd_21').style.borderColor = 'red';
-//         console.log('expired');
-//     } else {
-//         document.getElementById('deliveryAdd_21').style.borderColor = '#ced4da';
-//         console.log('cool');
-//     }
-// }
+    if (mo < todaymonth) {
+        document.getElementById('deliveryAdd_21').style.borderColor = 'red';
+        console.log('expired');
+    } else {
+        document.getElementById('deliveryAdd_21').style.borderColor = '#ced4da';
+        console.log('cool');
+    }
+}
 
 
 // $('#deliveryAdd_21').click(e => {
